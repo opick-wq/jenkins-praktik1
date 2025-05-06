@@ -1,7 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.10'
+            image 'python:3.10-windowsservercore'
+            args '-v C:/Users:/mnt/host'  // Optional: jika Anda ingin mount folder host ke dalam container
         }
     }
 
@@ -12,9 +13,9 @@ pipeline {
     stages {
         stage('Setup Environment & Install Dependencies') {
             steps {
-                sh '''
-                    python -m venv $VENV
-                    . $VENV/bin/activate
+                bat '''
+                    python -m venv %VENV%
+                    call %VENV%\\Scripts\\activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -23,8 +24,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh '''
-                    . $VENV/bin/activate
+                bat '''
+                    call %VENV%\\Scripts\\activate
                     pytest test_app.py
                 '''
             }

@@ -1,8 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.10-windowsservercore'
-            args '-v C:/Users:/mnt/host'  // Optional: jika Anda ingin mount folder host ke dalam container
+            image 'python:3.10-slim'
         }
     }
 
